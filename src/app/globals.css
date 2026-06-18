@@ -1,4 +1,16 @@
 @import "tailwindcss";
-@import "@heroui/styles"; 
+@import "@heroui/styles";
 @plugin "daisyui";
 
+/* :root {
+    --primary: #0EA5E9;
+    --secondary: #14B8A6;
+    --tertiary: #F43F5E;
+    --neutral: #64748B;
+
+    --background: #F8FAFC;
+    --surface: #FFFFFF;
+
+    --text-primary: #0F172A;
+    --text-secondary: #64748B;
+} */
