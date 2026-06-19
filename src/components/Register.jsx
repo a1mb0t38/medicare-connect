@@ -3,12 +3,29 @@ import { Button, Description, FieldError, Input, Label, Separator, TextField } f
 import { Check, EyeIcon, EyeOffIcon, HeartPlus, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 
 const Register = () => {
 
     const [showPw, setShowPw] = useState(false);
+    // const [fields, setFields] = useState({name:"", email:"", url:"", password:"", role:"patient"});
 
+    // const handleChange = (e) =>{
+    //     const { name, value} = e.target;
+    //     const updated = {...fields, [name]: value}
+    //     setFields(updated)
+    // }
+
+     const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+
+   const handleRegisterFunc = (data) =>{
+        console.log(data, "this is form data")
+   }
 
 
     return (
@@ -86,16 +103,17 @@ const Register = () => {
                     </div>
 
                     {/* form field */}
-                    <form className='flex flex-col gap-4'>
+                    <form onSubmit={handleSubmit(handleRegisterFunc)} className='flex flex-col gap-4'>
                         {/* name field */}
                         <TextField
                             className="border-slate-200/50 rounded-xl"
                             isRequired
                             name="name"
                             type="text"
+                           
                         >
                             <Label>Enter Your name</Label>
-                            <Input placeholder="Enter your name" />
+                            <Input {...register("name", {required: "Name is required"})} placeholder="Enter your name" /> 
                             <FieldError />
                         </TextField>
                         {/* email field */}
@@ -104,9 +122,10 @@ const Register = () => {
                             isRequired
                             name="email"
                             type="email"
+                            
                         >
                             <Label>Email</Label>
-                            <Input placeholder="john@example.com" />
+                            <Input {...register("email", {required: "email is required"})} placeholder="john@example.com" />
                             <FieldError />
                         </TextField>
                         {/* url field */}
@@ -115,9 +134,10 @@ const Register = () => {
                             isRequired
                             name="url"
                             type="url"
+                            
                         >
                             <Label>Photo Url</Label>
-                            <Input placeholder="Enter Profile Photo Url" />
+                            <Input {...register("url", {required: "url is required"})} placeholder="Enter Profile Photo Url" />
                             <FieldError />
                         </TextField>
                         {/* password field */}
@@ -126,6 +146,7 @@ const Register = () => {
                             isRequired
                             minLength={8}
                             name="password"
+                            
                             type={showPw ? "text" : "password"}
                             validate={(value) => {
                                 if (value.length < 8) {
@@ -141,13 +162,15 @@ const Register = () => {
                             }}
                         >
                             <Label>Password</Label>
-                            <Input placeholder="Enter your password" />
+                            <Input {...register("password", {required: "passsword is required"})} placeholder="Enter your password" />
                             <button type='button' className='absolute top-8 left-72 bg-none border-none cursor-pointer flex items-center p-1 ' onClick={()=> setShowPw((v)=> !v)}>
                                 {showPw ? <EyeOffIcon></EyeOffIcon> : <EyeIcon></EyeIcon>}
                             </button>
                             <Description>Must be at least 8 characters with 1 uppercase and 1 number</Description>
                             <FieldError />
                         </TextField>
+
+                        {/* role */}
                         <div className='flex iteam-center gap-4'>
                             <label className='text-slate-600 font-semibold'>Role</label>
                             <div className='flex gap-6'>
@@ -156,6 +179,9 @@ const Register = () => {
                                         type='radio'
                                         name='role'
                                         value="patient"
+                                        defaultChecked
+                                        {...register("role", {required: "role is required"})}
+                                        
                                     />
                                     Patient
                                 </label>
@@ -165,6 +191,8 @@ const Register = () => {
                                     type='radio'
                                     name='role'
                                     value="doctor"
+                                    {...register("role", {required: "role is required"})}
+                                    
                                     />
                                     Doctor
                                 </label>
