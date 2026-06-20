@@ -1,32 +1,49 @@
 "use client"
+import { authClient } from '@/lib/auth-client';
 import { Button, Description, FieldError, Input, Label, Separator, TextField } from '@heroui/react';
 import { Check, EyeIcon, EyeOffIcon, HeartPlus, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast, { Toaster } from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 
 const Register = () => {
 
     const [showPw, setShowPw] = useState(false);
-    // const [fields, setFields] = useState({name:"", email:"", url:"", password:"", role:"patient"});
 
-    // const handleChange = (e) =>{
-    //     const { name, value} = e.target;
-    //     const updated = {...fields, [name]: value}
-    //     setFields(updated)
-    // }
-
-     const {
+    const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-   const handleRegisterFunc = (data) =>{
-        console.log(data, "this is form data")
-   }
+    const handleRegisterFunc = async (data) => {
+        // console.log(data, "this is form data")
+        const { name, email, url, password, role } = data;
+        const { data: res, error } = await authClient.signUp.email({
+            name: name,
+            email: email,
+            image: url,
+            password: password,
+            role: role,
+            callbackURL: '/login',
+        })
+        // console.log(res, error, "res and errors")
+        if (res) {
+            toast.success('Account Created Successfully!')
+        }
+        if (error) {
+            toast.error("Some Error Occoured")
+        }
 
+    }
+
+    const handleGoogleSignin = async () => {
+        const data = await authClient.signIn.social({
+            provider: "google",
+        });
+    }
 
     return (
         <div className='min-h-screen w-full flex bg-slate-50 font-sans'>
@@ -87,6 +104,7 @@ const Register = () => {
 
                     {/* social sign-in */}
                     <Button
+                        onClick={handleGoogleSignin}
                         variant='bordered'
                         className="w-full flex gap-3 border-slate-200
                      text-slate-700 font-medium max-h-11 bg-cyan-300"
@@ -110,43 +128,43 @@ const Register = () => {
                             isRequired
                             name="name"
                             type="text"
-                           
+
                         >
                             <Label>Enter Your name</Label>
-                            <Input {...register("name", {required: "Name is required"})} placeholder="Enter your name" /> 
+                            <Input {...register("name", { required: "Name is required" })} placeholder="Enter your name" />
                             <FieldError />
                         </TextField>
                         {/* email field */}
                         <TextField
-                         className="border-slate-200/50 rounded-xl"
+                            className="border-slate-200/50 rounded-xl"
                             isRequired
                             name="email"
                             type="email"
-                            
+
                         >
                             <Label>Email</Label>
-                            <Input {...register("email", {required: "email is required"})} placeholder="john@example.com" />
+                            <Input {...register("email", { required: "email is required" })} placeholder="john@example.com" />
                             <FieldError />
                         </TextField>
                         {/* url field */}
                         <TextField
-                         className="border-slate-200/50 rounded-xl"
+                            className="border-slate-200/50 rounded-xl"
                             isRequired
                             name="url"
                             type="url"
-                            
+
                         >
                             <Label>Photo Url</Label>
-                            <Input {...register("url", {required: "url is required"})} placeholder="Enter Profile Photo Url" />
+                            <Input {...register("url", { required: "url is required" })} placeholder="Enter Profile Photo Url" />
                             <FieldError />
                         </TextField>
                         {/* password field */}
                         <TextField
-                         className="border-slate-200/50 rounded-xl relative"
+                            className="border-slate-200/50 rounded-xl relative"
                             isRequired
                             minLength={8}
                             name="password"
-                            
+
                             type={showPw ? "text" : "password"}
                             validate={(value) => {
                                 if (value.length < 8) {
@@ -162,8 +180,8 @@ const Register = () => {
                             }}
                         >
                             <Label>Password</Label>
-                            <Input {...register("password", {required: "passsword is required"})} placeholder="Enter your password" />
-                            <button type='button' className='absolute top-8 left-72 bg-none border-none cursor-pointer flex items-center p-1 ' onClick={()=> setShowPw((v)=> !v)}>
+                            <Input {...register("password", { required: "passsword is required" })} placeholder="Enter your password" />
+                            <button type='button' className='absolute top-8 left-72 bg-none border-none cursor-pointer flex items-center p-1 ' onClick={() => setShowPw((v) => !v)}>
                                 {showPw ? <EyeOffIcon></EyeOffIcon> : <EyeIcon></EyeIcon>}
                             </button>
                             <Description>Must be at least 8 characters with 1 uppercase and 1 number</Description>
@@ -180,19 +198,19 @@ const Register = () => {
                                         name='role'
                                         value="patient"
                                         defaultChecked
-                                        {...register("role", {required: "role is required"})}
-                                        
+                                        {...register("role", { required: "role is required" })}
+
                                     />
                                     Patient
                                 </label>
 
                                 <label className='flex font-semibold items-center gap-2 text-slate-500'>
                                     <input
-                                    type='radio'
-                                    name='role'
-                                    value="doctor"
-                                    {...register("role", {required: "role is required"})}
-                                    
+                                        type='radio'
+                                        name='role'
+                                        value="doctor"
+                                        {...register("role", { required: "role is required" })}
+
                                     />
                                     Doctor
                                 </label>
@@ -213,7 +231,10 @@ const Register = () => {
 
                 </div>
             </div>
-
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
 
         </div>
     );
