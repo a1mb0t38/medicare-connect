@@ -1,15 +1,43 @@
 "use client"
+import { authClient } from '@/lib/auth-client';
 import { Button, Description, FieldError, Input, Label, Separator, TextField } from '@heroui/react';
 import { Check, EyeIcon, EyeOffIcon, HeartPlus, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import toast, { Toaster } from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 
 const SignIn = () => {
 
     const [showPw, setShowPw] = useState(false);
 
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
 
+    const handleLoginFunc = async (data) => {
+        console.log("form data", data)
+        const { email, password } = data;
+        const { data: res, error } = await authClient.signIn.email({
+            email: email,
+            password: password,
+            callbackURL: "/",
+        })
+        console.log(res, "login response")
+
+        if (error) {
+            toast.error("Email or password is incorrect")
+        }
+    }
+
+    const handleGoogleLogin = async() =>{
+        const data = await authClient.signIn.social({
+            provider: "google",
+        });
+    }
 
     return (
         <div className='min-h-screen w-full flex bg-slate-50 font-sans'>
@@ -70,6 +98,7 @@ const SignIn = () => {
 
                     {/* social sign-in */}
                     <Button
+                        onClick={handleGoogleLogin}
                         variant='bordered'
                         className="w-full flex gap-3 border-slate-200
                      text-slate-700 font-medium max-h-11 bg-cyan-300"
@@ -86,23 +115,23 @@ const SignIn = () => {
                     </div>
 
                     {/* form field */}
-                    <form className='flex flex-col gap-4'>
-                       
+                    <form onSubmit={handleSubmit(handleLoginFunc)} className='flex flex-col gap-4'>
+
                         {/* email field */}
                         <TextField
-                         className="border-slate-200/50 rounded-xl"
+                            className="border-slate-200/50 rounded-xl"
                             isRequired
                             name="email"
                             type="email"
                         >
                             <Label>Email</Label>
-                            <Input placeholder="john@example.com" />
+                            <Input {...register("email", { required: "email is required" })} placeholder="john@example.com" />
                             <FieldError />
                         </TextField>
-                        
+
                         {/* password field */}
                         <TextField
-                         className="border-slate-200/50 rounded-xl relative"
+                            className="border-slate-200/50 rounded-xl relative"
                             isRequired
                             minLength={8}
                             name="password"
@@ -121,14 +150,14 @@ const SignIn = () => {
                             }}
                         >
                             <Label>Password</Label>
-                            <Input placeholder="Enter your password" />
-                            <button type='button' className='absolute top-8 left-72 bg-none border-none cursor-pointer flex items-center p-1 ' onClick={()=> setShowPw((v)=> !v)}>
+                            <Input {...register("password", { required: "passsword is required" })} placeholder="Enter your password" />
+                            <button type='button' className='absolute top-8 left-72 bg-none border-none cursor-pointer flex items-center p-1 ' onClick={() => setShowPw((v) => !v)}>
                                 {showPw ? <EyeOffIcon></EyeOffIcon> : <EyeIcon></EyeIcon>}
                             </button>
                             <Description>Must be at least 8 characters with 1 uppercase and 1 number</Description>
                             <FieldError />
                         </TextField>
-                        
+
                         <div className="flex flex-col gap-2">
                             <Button className="w-full bg-gradient-to-br from-cyan-700 to-teal-900" type="submit">
                                 SignIn
@@ -153,7 +182,10 @@ const SignIn = () => {
 
                 </div>
             </div>
-
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
 
         </div>
     );
