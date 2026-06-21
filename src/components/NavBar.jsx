@@ -3,6 +3,7 @@
 import { authClient } from '@/lib/auth-client';
 import Link from 'next/link';
 import React from 'react';
+import NavLink from './NavLink';
 
 const NavBar = () => {
 
@@ -23,7 +24,7 @@ const NavBar = () => {
                     <Link href='/doctors'>Find Doctors</Link>
                     <Link href='/aboutUs'>Acout Us</Link>
                     <Link href='/contactUs'>Contact Us</Link>
-                    <Link href='/dashboard'>DashBoard</Link>
+                    
                 </ul>
             </div>
             <div className="flex justify-between items-center bg-white px-2 pb-2">
@@ -32,19 +33,18 @@ const NavBar = () => {
                     <Link className='text-[#055c84] font-bold text-xl pl-2' href="/">MediCare Connect</Link>
                 </div>
                 <div className='hidden lg:flex gap-3 text-[#64748B] font-semibold'>
-                    <Link href='/'>Home</Link>
-                    <Link href='/doctors'>Find Doctors</Link>
-                    <Link href='/aboutUs'>About Us</Link>
-                    <Link href='/contactUs'>Contact Us</Link>
-                    <Link href='/dashboard'>DashBoard</Link>
 
+                    <NavLink href={'/'}>Home</NavLink>
+                    <NavLink href={'/doctors'}>Find Doctors</NavLink>
+                    <NavLink href={'/aboutUs'}>About Us</NavLink>
+                    <NavLink href={'/contactUs'}>Contact Us</NavLink>
                 </div>
 
                 {
                     isPending ? <span className="loading loading-spinner text-error"></span> : user ? <div className="flex items-center gap-2">
                         <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
-                        <span className='text-[#64748B]'>Hi {user?.name}</span>
-                        <div className="dropdown dropdown-end">
+                        
+                        <div className="dropdown dropdown-end border-r-2 border-r-[#dce2e8]">
                             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                                 <div className="w-10 rounded-full">
                                     <img
@@ -55,6 +55,7 @@ const NavBar = () => {
                             <ul
                                 tabIndex="-1"
                                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                                    <span className='text-[#64748B]'>Hi {user?.name}</span>
                                 <li>
                                     <a className="justify-between">
                                         Profile
@@ -65,6 +66,7 @@ const NavBar = () => {
                                 <li><a>Logout</a></li>
                             </ul>
                         </div>
+                        <button className='bg-[#19749c] text-white font-semibold px-3 py-2 rounded-md'><Link href='/dashboard'>DashBoard</Link></button>
                     </div> : <>
                         <div className='flex items-center gap-2 font-semibold'>
                             <button className='btn text-white bg-[#0EA5E9]'><Link href='/login'>Login</Link></button>
