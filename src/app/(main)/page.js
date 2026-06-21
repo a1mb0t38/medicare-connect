@@ -1,9 +1,10 @@
+import BannerPage from "@/components/BannerPage";
 
 
 export default function Home() {
   return (
     <div>
-      this is home page
+      <BannerPage></BannerPage>
     </div>
   );
 }
