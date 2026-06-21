@@ -26,7 +26,7 @@ const SignIn = () => {
             password: password,
             callbackURL: "/",
         })
-        console.log(res, "login response")
+        // console.log(res, "login response")
 
         if (error) {
             toast.error("Email or password is incorrect")

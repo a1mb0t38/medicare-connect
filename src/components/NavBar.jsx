@@ -8,7 +8,7 @@ import NavLink from './NavLink';
 const NavBar = () => {
 
     const { data: sesssion, isPending, error } = authClient.useSession()
-    console.log("session data", sesssion)
+    // console.log("session data", sesssion)
     const user = sesssion?.user;
 
     return (
@@ -63,7 +63,7 @@ const NavBar = () => {
                                     </a>
                                 </li>
                                 <li><a>Settings</a></li>
-                                <li><a>Logout</a></li>
+                                <li onClick={async()=> await authClient.signOut()}><a>Logout</a></li>
                             </ul>
                         </div>
                         <button className='bg-[#19749c] text-white font-semibold px-3 py-2 rounded-md'><Link href='/dashboard'>DashBoard</Link></button>
