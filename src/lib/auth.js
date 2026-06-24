@@ -27,6 +27,10 @@ export const auth = betterAuth({
                 required: true,
                 defaultValue:"patient",
             },
+            verificationStatus:{
+                type:"string",
+                defaultValue: "pending",
+            }
         },
     },
 });

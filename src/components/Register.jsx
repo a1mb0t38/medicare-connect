@@ -27,6 +27,7 @@ const Register = () => {
             image: url,
             password: password,
             role: role,
+            verificationStatus: "pending",
             callbackURL: '/login',
         })
         // console.log(res, error, "res and errors")
