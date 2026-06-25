@@ -1,5 +1,6 @@
 
 
+import Link from 'next/link';
 import React from 'react';
 
 const Doctors = ({doctor}) => {
@@ -57,7 +58,7 @@ const Doctors = ({doctor}) => {
         </div>
 
         <button className='mt-auto w-full rounded-2xl bg-sky-700 px-8 font-semibold text-white transition hover:bg-sky-800 cursor-pointer'>
-            View Details
+            <Link href={`/doctor_details/${doctor._id}`}>View Details</Link>
         </button>
 
         </div>
