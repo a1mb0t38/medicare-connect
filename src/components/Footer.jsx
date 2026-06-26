@@ -40,7 +40,7 @@ const Footer = () => {
                 <div className='space-y-3'>
                     <h4 className='text-xs font-bold uppercase tracking-wider text-gray-400'>Follow Us</h4>
                     <div className='flex gap-3 text-gray-500'>
-                        <a href="https://facebook.com" target='_black' className='hover:text-blue-600 transition text-sm flex items-center' gap-1>Facebook</a>
+                        <a href="https://facebook.com" target='_black' className='hover:text-blue-600 transition text-sm flex items-center gap-1'>Facebook</a>
                         <a href="https://linkedin.com" target='_black' className='hover:text-blue-600 transition text-sm flex items-center gap-1'>LinkedIn</a>
                     </div>
                 </div>
