@@ -4,7 +4,7 @@ import { Calendar, Stethoscope } from 'lucide-react';
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
-const DoctorDetail = ({doctor}) => {
+const DoctorDetail = ({ doctor }) => {
 
     // console.log(doctor, "doctor data")
 
@@ -13,7 +13,7 @@ const DoctorDetail = ({doctor}) => {
     const [symptoms, setSymptoms] = useState("")
     const [isProcessing, setIsprocessing] = useState(false);
 
-    const handleBooking = async (e) =>{
+    const handleBooking = async (e) => {
         e.preventDefault();
         setIsprocessing(true);
 
@@ -26,26 +26,27 @@ const DoctorDetail = ({doctor}) => {
             paymentStatus: "paid"
 
         }
-        try{
-            const res = await fetch(`${process.env.BASE_URL}/appointments`,{
+        try {
+            const res = await fetch(`${process.env.BASE_URL}/appointments`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(appointmentPayload),
             })
-            if(res.ok){
+            if (res.ok) {
                 toast.success(`Payment of {doctor.consultationFee} Received`)
                 setDate("")
                 setTime("")
                 setSymptoms("")
-            }else{
+                setIsprocessing(false)
+            } else {
                 toast.error("Payment or booking faild")
             }
-        }catch(error){
+        } catch (error) {
             console.error("booking error", error);
         }
-    }   
+    }
     return (
         <div className='max-w-5xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-6 font-sans'>
 
@@ -80,7 +81,7 @@ const DoctorDetail = ({doctor}) => {
 
                 <div className='bg-white border rounded-xl p-6 shadow-sm'>
                     <h2 className='text-lg font-bold mb-3 flex items-center gap-2'>
-                            <GraduationCap className='text-blue-500'></GraduationCap> Qualifications
+                        <GraduationCap className='text-blue-500'></GraduationCap> Qualifications
                     </h2>
                     <p className='text-gray-700 font-medium'>{doctor.qualifications}</p>
                 </div>
@@ -89,10 +90,10 @@ const DoctorDetail = ({doctor}) => {
             <div className='bg-white border rounded-xl p-6 shadow-sm h-fit'>
                 <div className='mb-4'>
                     <span className='text-xs text-gray-400 font-bold uppercase'>
-                            Payable Fee
+                        Payable Fee
                     </span>
                     <div className='text-2xl font-bold text-gray-800'>
-                            {doctor.consultationFee} Taka
+                        {doctor.consultationFee} Taka
                     </div>
                 </div>
                 <form onSubmit={handleBooking} className='space-y-4 pt-4 border-t'>
@@ -103,12 +104,12 @@ const DoctorDetail = ({doctor}) => {
                     {/* pick Date */}
                     <div>
                         <label className='block text-xs font-semibold text-gray-600'>Select Date</label>
-                        <input 
-                        type="date" 
-                        required
-                        value={date}
-                        onChange={(e)=> setDate(e.target.value)}
-                        className='w-full bg-gray-50 border rounded-lg p-2 text-sm focus:outline-blue-500'
+                        <input
+                            type="date"
+                            required
+                            value={date}
+                            onChange={(e) => setDate(e.target.value)}
+                            className='w-full bg-gray-50 border rounded-lg p-2 text-sm focus:outline-blue-500'
                         />
                         <span className='text-[11px] text-gray-400 mt-1
                          block'>
@@ -122,14 +123,13 @@ const DoctorDetail = ({doctor}) => {
                         <div className='grid grid-cols-3
                          gap-2'>
                             {
-                                doctor.availableSlots.map((slot)=> (
+                                doctor.availableSlots.map((slot) => (
                                     <button
-                                    type='button'
-                                    key={slot}
-                                    onClick={()=> setTime(slot)}
-                                    className={`p-2 text-xs font-medium rounded-lg border text-center transition ${
-                                        time === slot ? 'bg-blue-600 text-white border-blue-600' : "bg-white text-gray-600 hover:bg-gray-50"
-                                    }`}
+                                        type='button'
+                                        key={slot}
+                                        onClick={() => setTime(slot)}
+                                        className={`p-2 text-xs font-medium rounded-lg border text-center transition ${time === slot ? 'bg-blue-600 text-white border-blue-600' : "bg-white text-gray-600 hover:bg-gray-50"
+                                            }`}
                                     >
                                         {slot}
                                     </button>
@@ -137,35 +137,42 @@ const DoctorDetail = ({doctor}) => {
                             }
                         </div>
                     </div>
-                        
-                        <div>
-                            <label className='block text-xs font-semibold text-gray-600 mb-1'>Describe Your Problem</label>
-                            <textarea
+
+                    <div>
+                        <label className='block text-xs font-semibold text-gray-600 mb-1'>Describe Your Problem</label>
+                        <textarea
                             required
                             value={symptoms}
-                            onChange={(e)=> setSymptoms(e.target.value)}
+                            onChange={(e) => setSymptoms(e.target.value)}
                             placeholder='Write down your symptoms or problem here...'
                             className='w-full bg-gray-50 border rounded-lg p-2 text-sm h-28 resize-none'
-                            >
-                            </textarea>
-                        </div>
-
-                        <button
-                        type='submit'
-                        disabled={!date || !time || !symptoms || isProcessing}
-                        className='w-full bg-emerald-600 text-white font-medium py-5 rounded-lg hover:bg-emerald-700 disabled:opacity-50 transition'
                         >
-                            {
-                                isProcessing ? "processing Payment..." : `Pay ${doctor.consultationFee} & Confirm`
-                            }
-                        </button>
+                        </textarea>
+                    </div>
+
+                    <form action="/api/checkout_sessions" method="POST">
+                        <section>
+                            <button
+                                type='submit'
+                                role='link'
+                                disabled={!date || !time || !symptoms || isProcessing}
+                                className='w-full bg-emerald-600 text-white font-medium py-5 rounded-lg hover:bg-emerald-700 disabled:opacity-50 transition'
+                            >
+                                {
+                                    isProcessing ? "processing Payment..." : `Pay ${doctor.consultationFee} & Confirm`
+                                }
+                            </button>
+                        </section>
+                    </form>
+
+
 
                 </form>
-            </div>  
+            </div>
             <Toaster
-  position="top-center"
-  reverseOrder={false}
-/>
+                position="top-center"
+                reverseOrder={false}
+            />
         </div>
     );
 };
