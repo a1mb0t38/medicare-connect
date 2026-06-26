@@ -1,3 +1,5 @@
+
+import Footer from '@/components/Footer';
 import NavBar from '@/components/NavBar';
 import React from 'react';
 
@@ -5,7 +7,8 @@ const MainPagelayout = ({children}) => {
     return (
         <>
           <NavBar></NavBar>
-          {children}  
+          {children}
+          <Footer></Footer>
         </>
     );
 };
