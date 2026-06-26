@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import React from 'react';
 
 const patientNav =[
@@ -65,7 +66,7 @@ const SideBar = ({user}) => {
                             <li key={item.key}>
                                 <button className='w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800 transition'>
                                     <span>{item.icon}</span>
-                                    <span>{item.label}</span>
+                                    <span><Link href={`/dashboard/${item.key}`}>{item.label}</Link></span>
                                 </button>
                             </li>
                         ))
