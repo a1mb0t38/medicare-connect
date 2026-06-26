@@ -28,6 +28,7 @@ export async function POST(req) {
             appointmentTime: body.appointmentTime,
             appointmentStatus: "Pending",
             symptoms: body.symptoms,
+            consultationFee: body.consultationFee,
             paymentStatus: "paid"
       },
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,

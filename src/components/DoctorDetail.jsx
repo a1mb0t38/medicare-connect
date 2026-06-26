@@ -29,8 +29,8 @@ const DoctorDetail = ({ doctor }) => {
             appointmentTime: time,
             appointmentStatus: "Pending",
             symptoms: symptoms,
+            consultationFee: doctor.consultationFee,
             paymentStatus: "paid"
-
         }
         try {
             // const res = await fetch(`${process.env.BASE_URL}/appointments`, {

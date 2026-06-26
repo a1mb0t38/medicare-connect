@@ -40,6 +40,7 @@ export default async function Success({ searchParams }) {
             appointmentTime:session.metadata.appointmentTime,
             appointmentStatus: "Pending",
             symptoms: session.metadata.symptoms,
+            consultationFee: session.metadata.consultationFee,
             paymentStatus: "paid"
       }),
     })
