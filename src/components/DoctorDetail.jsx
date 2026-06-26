@@ -1,4 +1,5 @@
 'use client';
+import { authClient } from '@/lib/auth-client';
 import { CircleFill, GraduationCap, Suitcase } from '@gravity-ui/icons';
 import { Calendar, Stethoscope } from 'lucide-react';
 import React, { useState } from 'react';
@@ -13,38 +14,54 @@ const DoctorDetail = ({ doctor }) => {
     const [symptoms, setSymptoms] = useState("")
     const [isProcessing, setIsprocessing] = useState(false);
 
+    const {data:session, isPending} = authClient.useSession()
+    const user = session?.user;
+    // console.log(user, 'user data')
+
     const handleBooking = async (e) => {
         e.preventDefault();
         setIsprocessing(true);
 
         const appointmentPayload = {
-            // patientId: User?._id,
+            patientId: user?.id,
             doctorId: doctor._id,
             appointmentDate: date,
+            appointmentTime: time,
             appointmentStatus: "Pending",
             symptoms: symptoms,
             paymentStatus: "paid"
 
         }
         try {
-            const res = await fetch(`${process.env.BASE_URL}/appointments`, {
+            // const res = await fetch(`${process.env.BASE_URL}/appointments`, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify(appointmentPayload),
+            // })
+            const res = await fetch ('/api/checkout_sessions',{
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "content-type": "application/json",
                 },
-                body: JSON.stringify(appointmentPayload),
+                body: JSON.stringify(appointmentPayload)
             })
-            if (res.ok) {
-                toast.success(`Payment of {doctor.consultationFee} Received`)
-                setDate("")
-                setTime("")
-                setSymptoms("")
-                setIsprocessing(false)
-            } else {
-                toast.error("Payment or booking faild")
-            }
+            const data = await res.json()
+            window.location.href = data.url;
+            // if (res.ok) {
+            //     toast.success(`Payment of {doctor.consultationFee} Received`)
+            //     setDate("")
+            //     setTime("")
+            //     setSymptoms("")
+                
+            // } else {
+            //     toast.error("Payment or booking faild")
+            // }
         } catch (error) {
             console.error("booking error", error);
+        }finally{
+            setIsprocessing(false)
         }
     }
     return (
@@ -150,20 +167,20 @@ const DoctorDetail = ({ doctor }) => {
                         </textarea>
                     </div>
 
-                    <form action="/api/checkout_sessions" method="POST">
+                    {/* <form action="/api/checkout_sessions" method="POST"> */}
                         <section>
                             <button
                                 type='submit'
                                 role='link'
                                 disabled={!date || !time || !symptoms || isProcessing}
-                                className='w-full bg-emerald-600 text-white font-medium py-5 rounded-lg hover:bg-emerald-700 disabled:opacity-50 transition'
+                                className='w-full bg-emerald-600 text-white font-medium py-5 rounded-lg hover:bg-emerald-700 cursor-pointer disabled:opacity-50 transition'
                             >
                                 {
                                     isProcessing ? "processing Payment..." : `Pay ${doctor.consultationFee} & Confirm`
                                 }
                             </button>
                         </section>
-                    </form>
+                    {/* </form> */}
 
 
 

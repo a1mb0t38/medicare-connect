@@ -18,7 +18,7 @@ const DoctorsDetailsPage = async({params}) => {
 
     return (
         <div>
-            doctor detial page
+          
             <DoctorDetail doctor={data}></DoctorDetail>
         </div>
     );

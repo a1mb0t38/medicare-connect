@@ -3,7 +3,10 @@ import { headers } from 'next/headers'
 
 import { stripe } from '@/lib/stripe'
 
-export async function POST() {
+export async function POST(req) {
+  const body = await req.json()
+
+
   try {
     const headersList = await headers()
     const origin = headersList.get('origin')
@@ -18,9 +21,21 @@ export async function POST() {
         },
       ],
       mode: 'payment',
+      metadata: {
+           patientId: body.patientId,
+            doctorId: body.doctorId,
+            appointmentDate: body.appointmentDate,
+            appointmentTime: body.appointmentTime,
+            appointmentStatus: "Pending",
+            symptoms: body.symptoms,
+            paymentStatus: "paid"
+      },
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
     });
-    return NextResponse.redirect(session.url, 303)
+    // return NextResponse.redirect(session.url, 303)
+    return NextResponse.json({
+      url: session.url
+    })
   } catch (err) {
     return NextResponse.json(
       { error: err.message },
