@@ -14,11 +14,21 @@ export async function POST(req) {
     // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
       line_items: [
+        // {
+        //   // Provide the exact Price ID (for example, price_1234) of the product you want to sell
+        //   price: 'price_1TmQgKP7P7EBNkzXZLzuIPnv',
+        //   quantity: 1,
+        // },
         {
-          // Provide the exact Price ID (for example, price_1234) of the product you want to sell
-          price: 'price_1TmQgKP7P7EBNkzXZLzuIPnv',
+          price_data: {
+            currency : "bdt",
+            product_data: {
+              name: `Appointment With ${body.doctorName}`,
+            },
+            unit_amount: Number(body.consultationFee) * 100
+          },
           quantity: 1,
-        },
+        },  
       ],
       mode: 'payment',
       metadata: {
