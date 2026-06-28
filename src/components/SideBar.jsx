@@ -17,6 +17,7 @@ const doctorNav =[
     {key: "appointments", label: "Appointments", icon: "📅"},
     {key: "schedule", label: "Manage Schedule", icon: "📅"},
     {key: "prescriptions", label: "Prescriptions", icon: "💊"},
+    {key: "doctor-info", label: "Doctor Information", icon: "🩺"},
     {key: "profile", label: "Profile", icon: "👤"},
     {key: "settings", label: "Settings", icon: "⚙️"},
 ];

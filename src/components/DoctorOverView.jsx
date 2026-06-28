@@ -67,7 +67,7 @@ const DoctorOverView = ({appointments1}) => {
                     <tbody>
                         {
                             appointments1.map((appointment)=>{
-                                <tr key={appointment._id} className='border-b hover:bg-gray-50'>
+                              return  <tr key={appointment._id} className='border-b hover:bg-gray-50'>
                                     <td className='p-4'>{appointment.patientId}</td>
                                     <td className='p-4'>{appointment.appointmentDate}</td>
                                     <td className='p-4'>{appointment.appointmentTime}</td>
