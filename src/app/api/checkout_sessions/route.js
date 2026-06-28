@@ -24,6 +24,7 @@ export async function POST(req) {
       metadata: {
            patientId: body.patientId,
             doctorId: body.doctorId,
+            doctorName: body.doctorName,
             appointmentDate: body.appointmentDate,
             appointmentTime: body.appointmentTime,
             appointmentStatus: "Pending",

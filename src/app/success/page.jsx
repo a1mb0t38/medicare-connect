@@ -36,6 +36,7 @@ export default async function Success({ searchParams }) {
       body: JSON.stringify({
            patientId: session.metadata.patientId,
             doctorId: session.metadata.doctorId,
+            doctorName: session.metadata.doctorName,
             appointmentDate: session.metadata.appointmentDate,
             appointmentTime:session.metadata.appointmentTime,
             appointmentStatus: "Pending",

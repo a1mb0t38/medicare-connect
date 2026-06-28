@@ -60,7 +60,7 @@ const Overview = ({appointments}) => {
                             {
                                 appointments.map((item)=> (
                                     <tr key={item._id} className='border-b last:border-0 hover:bg-gray-50/50 transition-colors'>
-                                        <td className='p-4 font-mono text-xs text-gray-500'>{item.doctorId}</td>
+                                        <td className='p-4 font-mono text-xs text-gray-500'>{item.doctorName}</td>
                                         <td className='p-4 font-medium text-gray-800'>{item.appointmentDate}</td>
                                         <td className='p-4'>{item.appointmentTime}</td>
                                         <td className='p-4 capitalize'>{item.symptoms}</td>

@@ -25,6 +25,7 @@ const DoctorDetail = ({ doctor }) => {
         const appointmentPayload = {
             patientId: user?.id,
             doctorId: doctor._id,
+            doctorName: doctor.doctorName,
             appointmentDate: date,
             appointmentTime: time,
             appointmentStatus: "Pending",
