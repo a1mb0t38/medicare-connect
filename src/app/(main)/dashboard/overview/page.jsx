@@ -1,5 +1,6 @@
 
 
+import AdminOverView from '@/components/AdminOverView';
 import DoctorOverView from '@/components/DoctorOverView';
 import Overview from '@/components/Overview';
 import { auth } from '@/lib/auth';
@@ -21,11 +22,14 @@ const OverViewPage = async() => {
 
     // console.log(appointments1[0], "apppoints data")
 
+     const res2 = await fetch(`${process.env.BASE_URL}/admin/overview`, {cache: "no-store"})
+    const data = await res2.json()
+
     return (
         <div>
             <h1 className='text-md font-semibold'>Welcome {user?.name}</h1>
             {
-                user?.role === "patient" ? (<Overview appointments={appointments}></Overview>) : user?.role === "doctor" ? (<DoctorOverView appointments1={appointments1}></DoctorOverView>) : "" 
+                user?.role === "patient" ? (<Overview appointments={appointments}></Overview>) : user?.role === "doctor" ? (<DoctorOverView appointments1={appointments1}></DoctorOverView>) : <AdminOverView data={data}></AdminOverView> 
             }
         </div>
     );
