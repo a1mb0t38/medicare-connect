@@ -19,7 +19,7 @@ const OverViewPage = async() => {
     const res1 = await fetch(`${process.env.BASE_URL}/appointments/doctor/${user?.id}`,{cache: 'no-store'})
     const appointments1 = await res1.json()
 
-    // console.log(appointments, "apppoints data")
+    // console.log(appointments1[0], "apppoints data")
 
     return (
         <div>

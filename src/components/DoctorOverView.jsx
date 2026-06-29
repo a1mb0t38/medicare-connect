@@ -1,8 +1,12 @@
+'use client';
 import { Calendar, Clock } from '@gravity-ui/icons';
 import { Card } from '@heroui/react';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const DoctorOverView = ({appointments1}) => {
+
+    const route = useRouter()
 
      const totalEarnings = appointments1.filter((appointment)=> appointment.paymentStatus === "paid")
     .reduce((total, appointment)=>{
@@ -12,6 +16,22 @@ const DoctorOverView = ({appointments1}) => {
     const pendingAppointmments = appointments1.filter(
         (appointment) => appointment.appointmentStatus === "Pending"
     );
+
+    const handleStatus = async(id, status) =>{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/appointments/${id}`,{
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                appointmentStatus: status,
+            }),
+        })
+        const result = await res.json();
+        if(res.ok){
+            route.refresh()
+        }
+    }
 
     return (
         <div className='max-w-6xl mx-auto p-6 space-y-6'>
@@ -84,8 +104,8 @@ const DoctorOverView = ({appointments1}) => {
                                         {
                                             appointment.appointmentStatus === "Pending" ? (
                                                 <div className='flex gap-2'>
-                                                    <button className='px-3 py-1 rounded bg-green-600 text-white hover:bg-green-700'>Accept</button>
-                                                    <button className='px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700'>Reject</button>
+                                                    <button onClick={()=> handleStatus(appointment._id, "Accepted")} className='px-3 py-1 rounded bg-green-600 text-white hover:bg-green-700'>Accept</button>
+                                                    <button onClick={()=> handleStatus(appointment._id, "Rejected")} className='px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700'>Reject</button>
                                                 </div>
                                             ) : (
                                                 <span className={`px-2 py-1 rounded text-xs font-semibold ${appointment.appointmentStatus === "Accepted" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
