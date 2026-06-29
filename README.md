@@ -24,15 +24,15 @@ The project emphasizes security, scalability, responsive UI, and role-based acce
 
 ### 🔗 Live Website
 
-https://your-live-site.com
+https://medicare-connect-weld.vercel.app
 
 ### 💻 Client Repository
 
-https://github.com/yourusername/medicare-client
+https://github.com/a1mb0t38/medicare-connect
 
 ### ⚙️ Server Repository
 
-https://github.com/yourusername/medicare-server
+https://github.com/a1mb0t38/medicare-server
 
 ---
 
@@ -265,9 +265,9 @@ Fully optimized for:
 ## Clone the repositories
 
 ```bash
-git clone https://github.com/yourusername/medicare-client.git
+git clone https://github.com/a1mb0t38/medicare-client.git
 
-git clone https://github.com/yourusername/medicare-server.git
+git clone https://github.com/a1mb0t38/medicare-server.git
 ```
 
 ---
