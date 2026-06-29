@@ -1,4 +1,5 @@
 'use client'
+import { authClient } from '@/lib/auth-client';
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -11,9 +12,12 @@ const ManageUsers = ({users}) => {
             "Are you sure you want to delete this user?"
         )
         if(!confirmDelete) return;
-
+        const {data:tokenData} = await authClient.token();
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user/${id}`,{
             method: "DELETE",
+            headers: {
+                 authorization: `Bearer ${tokenData?.token}`
+            }
         })
 
         const result = await res.json();

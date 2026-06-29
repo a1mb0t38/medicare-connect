@@ -14,15 +14,32 @@ const OverViewPage = async() => {
     const user = session?.user;
     // console.log(user)
 
-    const res = await fetch(`${process.env.BASE_URL}/appointments/patient/${user?.id}`,{cache: 'no-store'})
+    const  {token} = await auth.api.getToken({
+        headers: await headers()
+    })
+
+
+    const res = await fetch(`${process.env.BASE_URL}/appointments/patient/${user?.id}`,{
+         headers: {
+                    authorization: `Bearer ${token}`
+                }
+    },{cache: 'no-store'})
     const appointments = await res.json()
 
-    const res1 = await fetch(`${process.env.BASE_URL}/appointments/doctor/${user?.id}`,{cache: 'no-store'})
+    const res1 = await fetch(`${process.env.BASE_URL}/appointments/doctor/${user?.id}`,{
+         headers: {
+                    authorization: `Bearer ${token}`
+                }
+    },{cache: 'no-store'})
     const appointments1 = await res1.json()
 
     // console.log(appointments1[0], "apppoints data")
 
-     const res2 = await fetch(`${process.env.BASE_URL}/admin/overview`, {cache: "no-store"})
+     const res2 = await fetch(`${process.env.BASE_URL}/admin/overview`,{
+         headers: {
+                    authorization: `Bearer ${token}`
+                }
+     }, {cache: "no-store"})
     const data = await res2.json()
 
     return (

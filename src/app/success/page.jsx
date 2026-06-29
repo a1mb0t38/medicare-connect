@@ -2,9 +2,15 @@ import { redirect } from 'next/navigation'
 
 import { stripe } from '@/lib/stripe'
 import Link from 'next/link'
+import { auth } from '@/lib/auth'
+import { headers } from 'next/headers'
 
 export default async function Success({ searchParams }) {
   const { session_id } = await searchParams
+
+  const  {token} = await auth.api.getToken({
+          headers: await headers()
+      })
 
   if (!session_id)
     throw new Error('Please provide a valid session_id (`cs_test_...`)')
@@ -31,7 +37,8 @@ export default async function Success({ searchParams }) {
     await fetch(`${process.env.BASE_URL}/appointments`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
            patientId: session.metadata.patientId,

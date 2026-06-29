@@ -1,4 +1,5 @@
 'use client';
+import { authClient } from '@/lib/auth-client';
 import { Calendar, Clock } from '@gravity-ui/icons';
 import { Card } from '@heroui/react';
 import { useRouter } from 'next/navigation';
@@ -18,10 +19,12 @@ const DoctorOverView = ({appointments1}) => {
     );
 
     const handleStatus = async(id, status) =>{
+         const {data:tokenData} = await authClient.token();
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/appointments/${id}`,{
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
+                authorization: `Bearer ${tokenData?.token}`
             },
             body: JSON.stringify({
                 appointmentStatus: status,

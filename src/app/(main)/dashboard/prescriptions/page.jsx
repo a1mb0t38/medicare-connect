@@ -10,7 +10,15 @@ const PrescriptionPage = async() => {
     })
     const user = session?.user;
 
+    const  {token} = await auth.api.getToken({
+        headers: await headers()
+    })
+
     const res = await fetch(`${process.env.BASE_URL}/appointments/doctor/${user.id}/accepted`,{
+         headers: {
+                            authorization: `Bearer ${token}`
+                        }
+    },{
         cache: 'no-store',
     })
     const appointments = await res.json()

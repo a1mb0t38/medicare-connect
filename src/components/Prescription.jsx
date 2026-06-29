@@ -1,4 +1,5 @@
 'use client'
+import { authClient } from '@/lib/auth-client';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import toast, { Toaster } from 'react-hot-toast';
@@ -19,12 +20,13 @@ const Prescription = ({doctor, appointments}) => {
             notes: data.notes,
             createdAt: new Date().toISOString(),
         }
-        console.log(prescription)
-
+        // console.log(prescription)
+         const {data:tokenData} = await authClient.token();
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/prescriptions`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                 authorization: `Bearer ${tokenData?.token}`
             },
             body: JSON.stringify(prescription)
         })

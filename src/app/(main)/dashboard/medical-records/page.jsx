@@ -11,7 +11,15 @@ const MedicalRecordPage = async() => {
 
     const user = session?.user;
 
-    const res = await fetch(`${process.env.BASE_URL}/prescriptions/patient/${user.id}`,{cache: 'no-store'})
+    const {token} = await auth.api.getToken({
+        headers: await headers()
+    })
+
+    const res = await fetch(`${process.env.BASE_URL}/prescriptions/patient/${user.id}`,{
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    },{cache: 'no-store'})
     const prescriptions = await res.json()
     // console.log(prescriptions, "prescription data");
 

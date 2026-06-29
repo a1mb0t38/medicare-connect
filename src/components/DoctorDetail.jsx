@@ -33,6 +33,7 @@ const DoctorDetail = ({ doctor }) => {
             consultationFee: doctor.consultationFee,
             paymentStatus: "paid"
         }
+        const {data:tokenData} = await authClient.token();
         try {
             // const res = await fetch(`${process.env.BASE_URL}/appointments`, {
             //     method: "POST",
@@ -45,6 +46,7 @@ const DoctorDetail = ({ doctor }) => {
                 method: "POST",
                 headers: {
                     "content-type": "application/json",
+                     authorization: `Bearer ${tokenData?.token}`
                 },
                 body: JSON.stringify(appointmentPayload)
             })
