@@ -4,7 +4,7 @@ import FeatureDoctor from "@/components/FeatureDoctor";
 
 export default async function Home() {
 
-  const res = await fetch(`${process.env.BASE_URL1}/feature-doctor`, {cache: 'no-store'})
+  const res = await fetch(`${process.env.BASE_URL}/feature-doctor`, {cache: 'no-store'})
   const doctors = await res.json()
   // console.log(doctors, "doctors data")
 
