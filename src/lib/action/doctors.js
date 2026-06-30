@@ -1,6 +1,7 @@
 
 'use server'
 
+import { headers } from "next/headers"
 import { auth } from "../auth"
 
 const baseUrl = process.env.BASE_URL
